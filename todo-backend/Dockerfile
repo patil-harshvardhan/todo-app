@@ -1,5 +1,5 @@
 # Dockerfile for Express API server
-FROM node
+FROM node:alpine
 
 USER root
 

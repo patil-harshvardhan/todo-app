@@ -7,11 +7,11 @@ services:
       - ./data:/data/db
     ports:
       - ${MONGO_PORT}:27017
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/todoapp --quiet
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $$MONGO_INITDB_ROOT_USERNAME -p $$MONGO_INITDB_ROOT_PASSWORD --quiet | grep 1
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 5
     env_file:
       - .env
 
@@ -23,9 +23,7 @@ services:
     env_file:
       - .env
     depends_on:
-      mongo:
-        condition: service_healthy
-        
+      - mongo
 
   todo-backend:
     image: todo-backend
@@ -35,8 +33,7 @@ services:
     ports:
       - ${TODO_BACKEND_PORT}:8000
     depends_on:
-      mongo:
-        condition: service_healthy
+      - mongo
     env_file:
       - .env
   
